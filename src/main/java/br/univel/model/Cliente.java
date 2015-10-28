@@ -1,8 +1,10 @@
 package br.univel.model;
 
+import br.univel.model.enums.EnumGenero;
+
 
 /**
- * Classe que reperesenta a modelo do cliente 
+ * Classe que representa a modelo do cliente 
  * 
  * @author Aureo
  * @since 27/10/2015 19:53  
