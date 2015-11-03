@@ -12,8 +12,8 @@ import br.univel.model.DBUtils.annotations.Coluna;
 import br.univel.model.DBUtils.annotations.Tabela;
 
 /**
- * Classe responsável por cuidar da camada do banco de dados
- * TODO criar pacote de exeptions
+ * Classe responsável por cuidar da camada do banco de dados TODO criar pacote
+ * de exeptions
  * 
  * @author aureo
  * @since 29/10/2015 21:21
@@ -21,8 +21,7 @@ import br.univel.model.DBUtils.annotations.Tabela;
 public class DB {
 
 	/**
-	 * Define uma {@code Tabela} para ser manipulada no
-	 * contexto atual
+	 * Define uma {@code Tabela} para ser manipulada no contexto atual
 	 * 
 	 * @see br.univel.model.DBUtils.Tabela
 	 */
@@ -32,62 +31,61 @@ public class DB {
 	 * Para facilitar a legibilidade do codigo
 	 */
 	private static boolean conectado = false;
-	
-	
+
 	private Conexao conexao;
-	
+
 	private Connection conn;
-	
-	
+
 	/**
 	 * Inicializar defaults
 	 */
-	private void init(){
-		
+	private void init() {
+
 	}
-	
-	public DB(){
+
+	public DB() {
 		init();
 	}
 
 	/**
 	 * Permite inicializar o a classe com um contexto
 	 * 
-	 * @param tabela 
+	 * @param tabela
 	 */
-	public DB(Object tabela){
+	public DB(Object tabela) {
 		contexto = tabela;
 		init();
 	}
-	
+
 	/**
 	 * 
-	 *  Método listar, funcionamento parecido com um <b>"Select * from"</b>
-	 *  
+	 * Método listar, funcionamento parecido com um <b>"Select * from"</b>
+	 * 
 	 * 
 	 * @return Lista de Objetos no contexto
-	 * @throws Exception Quando o contexto não estiver definido
+	 * @throws Exception
+	 *             Quando o contexto não estiver definido
 	 */
-	public List<Object> listar() throws Exception{
-		if(contexto == null){
+	public List<Object> listar() throws Exception {
+		if (contexto == null) {
 			throw new Exception("Contexto não definido");
 		}
-		
+
 		Tabela tabela = contexto.getClass().getDeclaredAnnotation(Tabela.class);
-		
-		if(tabela == null){
+
+		if (tabela == null) {
 			throw new Exception("Essa classe não foi definida como uma tabela.");
 		}
-		
+
 		List<Object> retorno = new ArrayList<>();
-		
+
 		conn = conexao.abrirConexao();
 		Statement st = conn.createStatement();
-		ResultSet result = st.executeQuery(criarSelect(contexto,tabela));
-		
-		while(result.next()){
+		ResultSet result = st.executeQuery(criarSelect(contexto, tabela));
+
+		while (result.next()) {
 			Object obj = Class.forName(contexto.getClass().getName());
-			
+
 			for (Field field : contexto.getClass().getDeclaredFields()) {
 				field.setAccessible(true);
 				System.out.println(field.getName());
@@ -102,58 +100,58 @@ public class DB {
 			}
 
 			retorno.add(obj);
-			
+
 		}
-		
-		
+
 		return null;
 	}
-	
-	
+
 	/**
-	 *  Controi uma select
+	 * Controi uma select
 	 * 
 	 * @param contexto
 	 * @param tabela
-	 * @return Query 
+	 * @return Query
 	 */
 	private String criarSelect(Object contexto, Tabela tabela) {
-	    StringBuilder sb = new StringBuilder();
-	    sb.append("Select ");
-	    sb.append(campos(contexto));
-	    sb.append(" from ");
-	    sb.append(tabela.nome().isEmpty() ? contexto.getClass().getCanonicalName() : tabela.nome());
-	    
+		StringBuilder sb = new StringBuilder();
+		sb.append("Select ");
+		sb.append(campos(contexto));
+		sb.append(" from ");
+		sb.append(tabela.nome().isEmpty() ? contexto.getClass()
+				.getCanonicalName() : tabela.nome());
+
 		return sb.toString();
 	}
 
 	/**
 	 * recupera os campos da tabela
+	 * 
 	 * @param contexto
 	 * @return String com os campos da tabela
 	 */
 	private String campos(Object ctx) {
 		StringBuilder sb = new StringBuilder();
-		for(Field campo : ctx.getClass().getFields()){
+		for (Field campo : ctx.getClass().getFields()) {
 			campo.setAccessible(true);
-			
-			if(campo.isAnnotationPresent(Coluna.class)){
+
+			if (campo.isAnnotationPresent(Coluna.class)) {
 				Coluna coluna = campo.getClass().getAnnotation(Coluna.class);
-				
-				if(!coluna.nome().isEmpty()){
-					sb.append(coluna.nome());	
+
+				if (!coluna.nome().isEmpty()) {
+					sb.append(coluna.nome());
 				} else {
-					sb.append(campo.getName());	
+					sb.append(campo.getName());
 				}
-				
+
 				sb.append(",");
-				
+
 			}
-			
-			
+
 		}
-		
-		return sb.toString().substring(sb.toString().lastIndexOf(','), sb.toString().length());
+
+		return sb.toString().substring(sb.toString().lastIndexOf(','),
+				sb.toString().length());
 	}
 
 	public Object getContexto() {
