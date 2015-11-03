@@ -1,8 +1,14 @@
 package br.univel.model.DBUtils;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
+import br.univel.model.DBUtils.annotations.Coluna;
 import br.univel.model.DBUtils.annotations.Tabela;
 
 /**
@@ -28,7 +34,10 @@ public class DB {
 	private static boolean conectado = false;
 	
 	
-	private Conexao conn;
+	private Conexao conexao;
+	
+	private Connection conn;
+	
 	
 	/**
 	 * Inicializar defaults
@@ -54,6 +63,7 @@ public class DB {
 	/**
 	 * 
 	 *  Método listar, funcionamento parecido com um <b>"Select * from"</b>
+	 *  
 	 * 
 	 * @return Lista de Objetos no contexto
 	 * @throws Exception Quando o contexto não estiver definido
@@ -63,22 +73,95 @@ public class DB {
 			throw new Exception("Contexto não definido");
 		}
 		
-		Annotation tabela = contexto.getClass().getDeclaredAnnotation(Tabela.class);
+		Tabela tabela = contexto.getClass().getDeclaredAnnotation(Tabela.class);
 		
 		if(tabela == null){
-			throw new Exception("Essa classe não foi definida como uma tabela");
+			throw new Exception("Essa classe não foi definida como uma tabela.");
 		}
+		
+		List<Object> retorno = new ArrayList<>();
+		
+		conn = conexao.abrirConexao();
+		Statement st = conn.createStatement();
+		ResultSet result = st.executeQuery(criarSelect(contexto,tabela));
+		
+		while(result.next()){
+			Object obj = Class.forName(contexto.getClass().getName());
+			
+			for (Field field : contexto.getClass().getDeclaredFields()) {
+				field.setAccessible(true);
+				System.out.println(field.getName());
+				if (field.get(obj) instanceof Integer) {
+					field.set((Integer) obj, result.getObject(field.getName()));
+				}
+				if (field.get(obj) instanceof String) {
+					field.set((String) obj, result.getObject(field.getName()));
+				}
+
+				field.set(obj, result.getObject(field.getName()));
+			}
+
+			retorno.add(obj);
+			
+		}
+		
 		
 		return null;
 	}
 	
 	
+	/**
+	 *  Controi uma select
+	 * 
+	 * @param contexto
+	 * @param tabela
+	 * @return Query 
+	 */
+	private String criarSelect(Object contexto, Tabela tabela) {
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("Select ");
+	    sb.append(campos(contexto));
+	    sb.append(" from ");
+	    sb.append(tabela.nome().isEmpty() ? contexto.getClass().getCanonicalName() : tabela.nome());
+	    
+		return sb.toString();
+	}
+
+	/**
+	 * recupera os campos da tabela
+	 * @param contexto
+	 * @return String com os campos da tabela
+	 */
+	private String campos(Object ctx) {
+		StringBuilder sb = new StringBuilder();
+		for(Field campo : ctx.getClass().getFields()){
+			campo.setAccessible(true);
+			
+			if(campo.isAnnotationPresent(Coluna.class)){
+				Coluna coluna = campo.getClass().getAnnotation(Coluna.class);
+				
+				if(!coluna.nome().isEmpty()){
+					sb.append(coluna.nome());	
+				} else {
+					sb.append(campo.getName());	
+				}
+				
+				sb.append(",");
+				
+			}
+			
+			
+		}
+		
+		return sb.toString().substring(sb.toString().lastIndexOf(','), sb.toString().length());
+	}
+
 	public Object getContexto() {
 		return contexto;
 	}
 
 	/**
-	 * permite alterar a tabela e aproveita a mesma instância
+	 * Permite alterar a tabela e aproveita a mesma instância
 	 * 
 	 * @param contexto
 	 */
