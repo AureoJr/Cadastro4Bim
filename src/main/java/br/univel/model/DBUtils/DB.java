@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,17 +33,38 @@ public class DB {
 	 */
 	private static boolean conectado = false;
 
-	private Conexao conexao;
 
-	private Connection conn;
+
+	private static Connection conn;
+	
+	private Conexao conexao;
 
 	/**
 	 * Inicializar defaults
 	 */
 	private void init() {
-
+		// Primeiro Teste com a conxao do banco
+		verificaConexao();
 	}
 
+	private void verificaConexao() {
+		try {
+			if(conn == null){
+				conexao = new Conexao();
+			}
+			conn = conexao.abrirConexao();
+			if(conn != null){
+				conectado = true;
+				conn.close();
+			}
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+	}
+	   
 	public DB() {
 		init();
 	}
@@ -78,8 +100,7 @@ public class DB {
 		}
 
 		List<Object> retorno = new ArrayList<>();
-
-		conn = conexao.abrirConexao();
+		
 		Statement st = conn.createStatement();
 		ResultSet result = st.executeQuery(criarSelect(contexto, tabela));
 
