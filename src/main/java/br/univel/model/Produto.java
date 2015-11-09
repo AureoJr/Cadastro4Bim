@@ -2,17 +2,34 @@ package br.univel.model;
 
 import java.math.BigDecimal;
 
+import br.univel.model.DBUtils.annotations.Coluna;
+import br.univel.model.DBUtils.annotations.Id;
+import br.univel.model.DBUtils.annotations.Tabela;
 import br.univel.model.enums.EnumCategoriaProduto;
 import br.univel.model.enums.EnumTipoUnidade;
 
+@Tabela(nome = "produto")
 public class Produto {
 
+	@Id
 	private Integer id;
-	private Integer codigoDeBarras;
+	
+	@Coluna(nome = "codigo_barra")
+	private Integer codigoBarra;
+	
+	@Coluna(nome = "categoria_produto")
 	private EnumCategoriaProduto enumCategoriaProduto;
+	
+	@Coluna(nome ="descricao")
 	private String descricao;
+	
+	@Coluna(nome="tipo_unidade")
 	private EnumTipoUnidade enumTipoUnidade;
+	
+	@Coluna(nome="custo")
 	private BigDecimal custo;
+	
+	@Coluna(nome = "margem_lucro")
 	private BigDecimal margemLucro;
 
 	public Integer getId() {
@@ -23,12 +40,12 @@ public class Produto {
 		this.id = id;
 	}
 	 
-	public Integer getCodigoDeBarras() {
-		return codigoDeBarras;
+	public Integer getCodigoBarra() {
+		return codigoBarra;
 	}
 
-	public void setCodigoDeBarras(Integer codigoDeBarras) {
-		this.codigoDeBarras = codigoDeBarras;
+	public void setCodigoBarras(Integer codigoBarra) {
+		this.codigoBarra = codigoBarra;
 	}
 
 	public EnumCategoriaProduto getEnumCategoriaProduto() {

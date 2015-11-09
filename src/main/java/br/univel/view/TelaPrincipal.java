@@ -113,26 +113,26 @@ public class TelaPrincipal extends JFrame {
 			JOptionPane.showMessageDialog(this, "Lamento mas não foi possível fazer a conexão com o banco");
 		}
 		
-//		Runnable acaoOk = () -> {
-//			glass.setVisible(false);
-//			glass = new BlockPanel();
-//		};
+		Runnable acaoOk = () -> {
+			glass.setVisible(false);
+			glass = new BlockPanel();
+		};
 //
 //		
 //		//---- USAR A INDICAÇÃO DE PROGRESSO.
-//		JXBusyLabel busy = new JXBusyLabel();
-//		busy.setBusy(true);
-//		glass = new BlockPanel(busy);
+		JXBusyLabel busy = new JXBusyLabel();
+		busy.setBusy(true);
+		glass = new BlockPanel(busy);
 //		//-----------------------------------
 //		
 //		//---- USAR O PAINEL DE LOGIN.
-////		PainelLogin painelLogin = new PainelLogin(acaoOk);
-////		glass = new BlockPanel(painelLogin);
+		PainelLogin painelLogin = new PainelLogin(acaoOk);
+		glass = new BlockPanel(painelLogin);
 //		//--c---------------------------------
 //
-//		setGlassPane(glass);
-//
-//		glass.setVisible(true);
+		setGlassPane(glass);
+
+		glass.setVisible(true);
 	}
 
 	private void abrirTela() {
