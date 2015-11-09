@@ -25,7 +25,7 @@ public class Conexao {
 
 	private static Connection conexao;
 
-	private Conexao() {
+	Conexao() {
 
 		initialize();
 
@@ -33,21 +33,18 @@ public class Conexao {
 
 	private void initialize() {
 		// dados padroes para efetuar testes
-		DBUser = "postg";
-		DBPass = "postg";
-		DBName = "trabalho";
-		DBhost = "localhost";
+		DBUser = "java";
+		DBPass = "java2000";
+		DBName = "aula";
+		DBhost = "127.0.0.1";
 		DBPort = "5432";
 		DBSelecionado = EnumBDsDisponiveis.POSTGRESQL;
 
 	}
 
 	public Connection abrirConexao() throws SQLException {
-
-		conexao = DriverManager.getConnection(DBSelecionado.getStrConnection()
+		return DriverManager.getConnection(DBSelecionado.getStrConnection()
 				+ DBhost + ":" + DBPort + "/" + DBName, DBUser, DBPass);
-		
-		return conexao;
 	}
 
 	public void fecharConexao() {
