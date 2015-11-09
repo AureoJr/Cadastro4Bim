@@ -14,6 +14,8 @@ import javax.swing.JTabbedPane;
 
 import org.jdesktop.swingx.JXBusyLabel;
 
+import br.univel.model.DBUtils.DB;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.function.Function;
@@ -21,7 +23,7 @@ import java.util.function.Function;
 public class TelaPrincipal extends JFrame {
 
 	private JPanel contentPane;
-	private JTabbedPane tabbedPane;
+	private JTabbedPane tabbedPane;		
 	private BlockPanel glass;
 
 	/**
@@ -100,28 +102,37 @@ public class TelaPrincipal extends JFrame {
 			}
 		}).start();
 	}
-
+ 
 	private void blockParaLogin() {
-		Runnable acaoOk = () -> {
-			glass.setVisible(false);
-			glass = new BlockPanel();
-		};
-
+				
+		DB db = new DB();
 		
-		//---- USAR A INDICAÇÃO DE PROGRESSO.
-		JXBusyLabel busy = new JXBusyLabel();
-		busy.setBusy(true);
-		glass = new BlockPanel(busy);
-		//-----------------------------------
+		if(db.isConectado()){
+			System.out.print("! Conectou Saporra! !");
+		} else {
+			JOptionPane.showMessageDialog(this, "Lamento mas não foi possível fazer a conexão com o banco");
+		}
 		
-		//---- USAR O PAINEL DE LOGIN.
-//		PainelLogin painelLogin = new PainelLogin(acaoOk);
-//		glass = new BlockPanel(painelLogin);
-		//-----------------------------------
-
-		setGlassPane(glass);
-
-		glass.setVisible(true);
+//		Runnable acaoOk = () -> {
+//			glass.setVisible(false);
+//			glass = new BlockPanel();
+//		};
+//
+//		
+//		//---- USAR A INDICAÇÃO DE PROGRESSO.
+//		JXBusyLabel busy = new JXBusyLabel();
+//		busy.setBusy(true);
+//		glass = new BlockPanel(busy);
+//		//-----------------------------------
+//		
+//		//---- USAR O PAINEL DE LOGIN.
+////		PainelLogin painelLogin = new PainelLogin(acaoOk);
+////		glass = new BlockPanel(painelLogin);
+//		//--c---------------------------------
+//
+//		setGlassPane(glass);
+//
+//		glass.setVisible(true);
 	}
 
 	private void abrirTela() {

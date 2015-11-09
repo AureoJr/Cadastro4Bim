@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import java.io.File;
 import java.io.IOException;
 
 public class BlockPanel extends JPanel {
@@ -26,8 +27,7 @@ public class BlockPanel extends JPanel {
 	public BlockPanel() {
 		
 		try {
-			image = ImageIO.read(BlockPanel.class
-					.getResourceAsStream("/fundo.jpg"));
+			image = ImageIO.read(new File("/home/aureo/Imagens/anorexia.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
