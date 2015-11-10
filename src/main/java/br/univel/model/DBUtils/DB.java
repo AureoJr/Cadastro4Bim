@@ -3,6 +3,7 @@ package br.univel.model.DBUtils;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -101,8 +102,8 @@ public class DB {
 
 		List<Object> retorno = new ArrayList<>();
 		
-		Statement st = conn.createStatement();
-		ResultSet result = st.executeQuery(criarSelect(contexto, tabela));
+		PreparedStatement st = conn.prepareStatement(criarSelect(contexto, tabela));
+		ResultSet result = st.executeQuery();
 
 		while (result.next()) {
 			Object obj = Class.forName(contexto.getClass().getName());
