@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * 	Anotação para tratar as os atributos que representão colunas
- * no banco de dados, se o valor for vazio ele, o padrão será 
+ * no banco de dados, se o valor for vazio o padrão será 
  * o nome do campo.
  * 
  * @author aureo
@@ -19,4 +19,13 @@ import java.lang.annotation.Target;
 public @interface Coluna {
 
 	public String nome() default "";
+	
+	public String tipo() default "";
+	
+	public int tamano() default 0;
+	
+	public int percisao() default 0;
+	
+	public boolean nullable() default false;
+	
 }
