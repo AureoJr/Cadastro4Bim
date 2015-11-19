@@ -7,13 +7,13 @@ import br.univel.model.DBUtils.annotations.Tabela;
 @Tabela(nome = "cidade")
 public class Cidade {	
 
-	@Id
+	@Id(nome = "id")
 	private Integer id;
 	
-	@Coluna(nome = "uf")
+	@Coluna(nome = "uf" )
 	private String uf;
 	
-	@Coluna(nome = "cidade")
+	@Coluna(nome = "nome")
 	private String nomeCidade;
 	
 	@Coluna(nome = "uf_abreviado")
