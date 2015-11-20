@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import br.univel.model.DBUtils.annotations.Coluna;
 import br.univel.model.DBUtils.annotations.Id;
 import br.univel.model.DBUtils.annotations.Tabela;
 import br.univel.model.DBUtils.enums.EnumBDsDisponiveis;
@@ -49,7 +50,7 @@ public class InitDataBase {
 	 */
 	public void criarbanco() throws Exception{
 		// Lista para armazenar as Classes
-		List<Object> classes = new ArrayList<>();
+		List<Class<?>> classes = new ArrayList<>();
 		
 		//Sufixo para definir os arquivos .class
 		String suffix = ".class";
@@ -73,9 +74,9 @@ public class InitDataBase {
 		for (File classe : arrayClasses) {
 			if(classe.getName().endsWith(suffix)){
 
-			    String className = classe.getName().replaceAll(".class$", ""); // Não sei o que isso realmente faz
+			    String className = classe.getName().replaceAll(".class$", ""); 
 				classes.add(Class.forName(InitDataBase.pacote+"."+className));
-				
+				System.out.println(Class.forName(InitDataBase.pacote+"."+className).getName());	
 			}
 		}
 		
@@ -85,23 +86,27 @@ public class InitDataBase {
 		script.append("\n");
 		
 		//Criar scripts da tabela
-		for (Object tabela : classes) {
+		for (Class<?> obj : classes) {
 			
-			//Object obj = tbl.newInstance();
+			Object tabela = Class.forName(obj.getName()).newInstance();
 			
-			Tabela novaTabela = tabela.getClass().getDeclaredAnnotation(Tabela.class);			
 			
-			if(novaTabela == null){
-				throw new Exception("A classe " +tabela.getClass().getName()+" Não possui anotação");
+			System.out.println(tabela.getClass().getName());
+			
+			Tabela novaTabela = tabela.getClass().getDeclaredAnnotation(Tabela.class);
+			
+			if(novaTabela != null){
+			
+			
+				script.append("CREATE TABLE ");
+				script.append(novaTabela.nome().isEmpty() ?  tabela.getClass() : novaTabela.nome());
+				script.append("{ \n");
+				
+				script.append(addTableFields(tabela));
 			}
-			script.append("CREATE TABLE ");
-			script.append(novaTabela.nome().isEmpty() ?  tabela.getClass() : novaTabela.nome());
-			script.append("{ \n");
-			
-			script.append(addTableFields(tabela));
 		}
 				
-		
+		System.out.println(script.toString());
 	}
 
 	/**
@@ -109,23 +114,50 @@ public class InitDataBase {
 	 * 
 	 * @param tabela
 	 * @return Retorna todas colunas que estão anotadas
+	 * @throws Exception 
 	 */
-	private String addTableFields(Object tabela) {
+	private String addTableFields(Object tabela) throws Exception {
 		StringBuilder colunaTabela = new StringBuilder();
 		
+		Field[] campos = tabela.getClass().getDeclaredFields();
+		 
+		boolean possuiID = false;
+		
 		//Verificação para garantir que a tabela tem uma coluna ID
-		if(!tabela.getClass().isAnnotationPresent(Id.class)){
-			
+		for(Field campo : campos){
+			if(campo.isAnnotationPresent(Id.class)){
+				possuiID = true;
+				break;
+			}
 		}
 		
-		//Lista para criar os campos
-		List<Field> campos = new ArrayList<>();
+		if(!possuiID){
+			throw new Exception("A Classe "+tabela.getClass().getName()+" não possui ID");
+		}		
+		
+		Id idTabela = campos.getClass().getAnnotation(Id.class);
+		
+		colunaTabela.append(idTabela != null? idTabela.nome() : "ID ");
+		colunaTabela.append("integer, \n");
 		
 		
-		campos.addAll(Arrays.asList(tabela.getClass().getFields()));
 		
+		for(Field field : campos){
+			Coluna coluna = field.getDeclaredAnnotation(Coluna.class);
+			if(coluna != null){
+				colunaTabela.append(!coluna.nome().isEmpty() ? coluna.nome() : field.getName());
+				colunaTabela.append(coluna.tipo());
+				if(coluna.nullable()){
+					colunaTabela.append(" NOT NULL");
+				}
+				colunaTabela.append(" , \n");
+				
+				
+				//TODO Implementar os métodos que validam os tipos 
+			}
+		}
 		
-		colunaTabela.append("");
+		colunaTabela.append("primary key(ID)); \n");
 		
 		return colunaTabela.toString();
 	}
