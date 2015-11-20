@@ -53,7 +53,7 @@ public class Produto {
 	}
 
 	public void setEnumCategoriaProduto(
-			EnumCategoriaProduto enumCategoriaProduto) {
+			EnumCategoriaProduto enumCategoriaProdurto) {
 		this.enumCategoriaProduto = enumCategoriaProduto;
 	}
 
