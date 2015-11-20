@@ -15,12 +15,11 @@ import java.lang.annotation.Target;
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
 public @interface Coluna {
 
 	public String nome() default "";
 	
-	public String tipo() default "";
+	public String tipo() default "varchar";
 	
 	public int tamano() default 0;
 	
