@@ -51,4 +51,53 @@ public class Conexao {
 
 	}
 
+	public String getDBUser() {
+		return DBUser;
+	}
+
+	public void setDBUser(String dBUser) {
+		DBUser = dBUser;
+	}
+
+	public String getDBPass() {
+		return DBPass;
+	}
+
+	public void setDBPass(String dBPass) {
+		DBPass = dBPass;
+	}
+
+	public String getDBName() {
+		return DBName;
+	}
+
+	public void setDBName(String dBName) {
+		DBName = dBName;
+	}
+
+	public String getDBhost() {
+		return DBhost;
+	}
+
+	public void setDBhost(String dBhost) {
+		DBhost = dBhost;
+	}
+
+	public String getDBPort() {
+		return DBPort;
+	}
+
+	public void setDBPort(String dBPort) {
+		DBPort = dBPort;
+	}
+
+	public EnumBDsDisponiveis getDBSelecionado() {
+		return DBSelecionado;
+	}
+
+	public void setDBSelecionado(EnumBDsDisponiveis dBSelecionado) {
+		DBSelecionado = dBSelecionado;
+	}
+
+	
 }
