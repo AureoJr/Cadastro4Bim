@@ -48,7 +48,7 @@ public class InitDataBase {
 	 * Cria todas as tabelas referencciadas no model
 	 * @throws Exception 
 	 */
-	public void criarbanco() throws Exception{
+	public String criarbanco() throws Exception{
 		// Lista para armazenar as Classes
 		List<Class<?>> classes = new ArrayList<>();
 		
@@ -107,6 +107,8 @@ public class InitDataBase {
 		}
 				
 		System.out.println(script.toString());
+		return script.toString();
+		
 	}
 
 	/**
@@ -146,6 +148,7 @@ public class InitDataBase {
 			Coluna coluna = field.getDeclaredAnnotation(Coluna.class);
 			if(coluna != null){
 				colunaTabela.append(!coluna.nome().isEmpty() ? coluna.nome() : field.getName());
+				colunaTabela.append(" ");
 				colunaTabela.append(coluna.tipo());
 				if(coluna.nullable()){
 					colunaTabela.append(" NOT NULL");
