@@ -2,29 +2,32 @@ package br.univel.view;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JMenuBar;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.border.EmptyBorder;
 
 import org.jdesktop.swingx.JXBusyLabel;
 
 import br.univel.model.DBUtils.DB;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.util.function.Function;
+import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
 
 public class TelaPrincipal extends JFrame {
 
 	private JPanel contentPane;
 	private JTabbedPane tabbedPane;		
 	private BlockPanel glass;
+	
+	private static String ADD_ICON = "/icons/add-1-icon.png";
+	
 
 	/**
 	 * Launch the application.
@@ -47,18 +50,20 @@ public class TelaPrincipal extends JFrame {
 	 */
 	public TelaPrincipal() {
 
-		blockParaLogin();
-
+//		blockParaLogin();
+//
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
-
+//
 		JMenu mnCadastros = new JMenu("Cadastros");
 		menuBar.add(mnCadastros);
 
 		JMenuItem mntmCliente = new JMenuItem("Cliente");
+		mntmCliente.setHorizontalAlignment(SwingConstants.LEFT);
+		mntmCliente.setIcon(new ImageIcon(TelaPrincipal.class.getResource(ADD_ICON)));
 		mntmCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrirTela();
@@ -67,13 +72,21 @@ public class TelaPrincipal extends JFrame {
 		});
 		mnCadastros.add(mntmCliente);
 		
-		JMenuItem mntmBloquear = new JMenuItem("BLOQUEAR");
-		mntmBloquear.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				block();
-			}
-		});
-		mnCadastros.add(mntmBloquear);
+		JMenuItem mntmUsurio = new JMenuItem("Usuário");
+		mntmCliente.setIcon(new ImageIcon( TelaPrincipal.class.getResource(ADD_ICON)));
+		mnCadastros.add(mntmUsurio);
+		
+		JMenuItem mntmProduto = new JMenuItem("Produto");
+		mntmProduto.setIcon(new ImageIcon( TelaPrincipal.class.getResource(ADD_ICON)));
+		mnCadastros.add(mntmProduto);
+//		
+//		JMenuItem mntmBloquear = new JMenuItem("BLOQUEAR");
+//		mntmBloquear.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				block();
+//			}
+//		});
+//		mnCadastros.add(mntmBloquear);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));

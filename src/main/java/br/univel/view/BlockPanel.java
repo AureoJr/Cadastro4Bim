@@ -27,7 +27,7 @@ public class BlockPanel extends JPanel {
 	public BlockPanel() {
 		
 		try {
-			image = ImageIO.read(new File("/home/aureo/Imagens/anorexia.jpg"));
+			image = ImageIO.read(new File("/RataoDoBanhado/src/main/resources/imagens/icons/Barcodes-icon-16.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
