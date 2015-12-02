@@ -77,7 +77,7 @@ public class TelaPrincipal extends JFrame {
 		mnCadastros.add(mntmUsurio);
 		
 		JMenuItem mntmProduto = new JMenuItem("Produto");
-		mntmProduto.setIcon(new ImageIcon( TelaPrincipal.class.getResource(ADD_ICON)));
+		mntmCliente.setIcon(new ImageIcon( TelaPrincipal.class.getResource(ADD_ICON)));
 		mnCadastros.add(mntmProduto);
 //		
 //		JMenuItem mntmBloquear = new JMenuItem("BLOQUEAR");
