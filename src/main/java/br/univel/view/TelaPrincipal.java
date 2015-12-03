@@ -22,6 +22,7 @@ import javax.swing.SwingConstants;
 
 public class TelaPrincipal extends JFrame {
 
+	private static final String AbstractFrame = null;
 	private JPanel contentPane;
 	private JTabbedPane tabbedPane;		
 	private BlockPanel glass;
@@ -66,18 +67,25 @@ public class TelaPrincipal extends JFrame {
 		mntmCliente.setIcon(new ImageIcon(TelaPrincipal.class.getResource(ADD_ICON)));
 		mntmCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				abrirTela();
+				try {
+					abrirTela("CadastroCliente");
+				} catch (InstantiationException  | IllegalAccessException | ClassNotFoundException e) {
+					System.out.println("Seu frame não pode ser instanciado");
+					e.printStackTrace();
+				}
 			}
 
 		});
 		mnCadastros.add(mntmCliente);
 		
 		JMenuItem mntmUsurio = new JMenuItem("Usuário");
-		mntmCliente.setIcon(new ImageIcon( TelaPrincipal.class.getResource(ADD_ICON)));
+		mntmUsurio.setHorizontalAlignment(SwingConstants.LEFT);
+		mntmUsurio.setIcon(new ImageIcon(TelaPrincipal.class.getResource(ADD_ICON)));
 		mnCadastros.add(mntmUsurio);
 		
 		JMenuItem mntmProduto = new JMenuItem("Produto");
-		mntmCliente.setIcon(new ImageIcon( TelaPrincipal.class.getResource(ADD_ICON)));
+		mntmProduto.setHorizontalAlignment(SwingConstants.LEFT);
+		mntmProduto.setIcon(new ImageIcon(TelaPrincipal.class.getResource(ADD_ICON)));
 		mnCadastros.add(mntmProduto);
 //		
 //		JMenuItem mntmBloquear = new JMenuItem("BLOQUEAR");
@@ -148,17 +156,28 @@ public class TelaPrincipal extends JFrame {
 		glass.setVisible(true);
 	}
 
-	private void abrirTela() {
-		TelaCadastroCliente telaCadastroCliente = new TelaCadastroCliente();
-		ActionListener action = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				tabbedPane.remove(telaCadastroCliente);
-			}
-		};
-		telaCadastroCliente.setCloseAction(action);
+//	private void abrirTela() {
+//		WindowManger telaCadastroCliente = new WindowManger();
+//		ActionListener action = new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				tabbedPane.remove(telaCadastroCliente);
+//			}
+//		};
+//		telaCadastroCliente.setCloseAction(action);
+//
+//		tabbedPane.addTab("Tela ", telaCadastroCliente);
+//	}
+	
+	private void abrirTela(String tela) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+		final AbstractFrame conteudo = new WindowManager(tela);
+		conteudo.configureFrame();
 
-		tabbedPane.addTab("Tela ", telaCadastroCliente);
-	}
+		ActionListener action = e -> tabbedPane.remove(conteudo);
+		conteudo.setCloseAction(action);
+
+		tabbedPane.addTab(conteudo.toString(), conteudo);
+	}	
+	
 
 }
