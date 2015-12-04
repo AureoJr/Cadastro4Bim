@@ -17,11 +17,17 @@ import javax.swing.border.EmptyBorder;
 import org.jdesktop.swingx.JXBusyLabel;
 
 import br.univel.model.DBUtils.DB;
+import br.univel.view.actions.ActionAddTab;
+
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
 public class TelaPrincipal extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static final String AbstractFrame = null;
 	private JPanel contentPane;
 	private JTabbedPane tabbedPane;		
@@ -64,28 +70,20 @@ public class TelaPrincipal extends JFrame {
 
 		JMenuItem mntmCliente = new JMenuItem("Cliente");
 		mntmCliente.setHorizontalAlignment(SwingConstants.LEFT);
-		mntmCliente.setIcon(new ImageIcon(TelaPrincipal.class.getResource(ADD_ICON)));
-		mntmCliente.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-					abrirTela("CadastroCliente");
-				} catch (InstantiationException  | IllegalAccessException | ClassNotFoundException e) {
-					System.out.println("Seu frame não pode ser instanciado");
-					e.printStackTrace();
-				}
-			}
-
-		});
+		mntmCliente.setIcon(new ImageIcon(TelaPrincipal.class.getResource("/icons/add-1-icon.png")));
+		mntmCliente.addActionListener(new ActionAddTab(this, "CadastroCliente"));
 		mnCadastros.add(mntmCliente);
 		
 		JMenuItem mntmUsurio = new JMenuItem("Usuário");
 		mntmUsurio.setHorizontalAlignment(SwingConstants.LEFT);
+		mntmUsurio.addActionListener(new ActionAddTab(this, "CadastroUsuario"));
 		mntmUsurio.setIcon(new ImageIcon(TelaPrincipal.class.getResource(ADD_ICON)));
 		mnCadastros.add(mntmUsurio);
 		
 		JMenuItem mntmProduto = new JMenuItem("Produto");
 		mntmProduto.setHorizontalAlignment(SwingConstants.LEFT);
 		mntmProduto.setIcon(new ImageIcon(TelaPrincipal.class.getResource(ADD_ICON)));
+		mntmProduto.addActionListener(new ActionAddTab(this, "CadastroProduto"));
 		mnCadastros.add(mntmProduto);
 //		
 //		JMenuItem mntmBloquear = new JMenuItem("BLOQUEAR");
@@ -169,7 +167,7 @@ public class TelaPrincipal extends JFrame {
 //		tabbedPane.addTab("Tela ", telaCadastroCliente);
 //	}
 	
-	private void abrirTela(String tela) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+	public void abrirTela(String tela) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		final AbstractFrame conteudo = new WindowManager(tela);
 		conteudo.configureFrame();
 
