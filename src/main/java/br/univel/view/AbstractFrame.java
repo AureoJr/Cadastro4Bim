@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.ImageIcon;
+import javax.swing.UIManager;
 
 /**
  *  Configuração para o padrão de telas 
@@ -40,7 +42,7 @@ public abstract class AbstractFrame extends JPanel {
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(Color.WHITE);
+		panel.setBackground(UIManager.getColor("Button.disabledToolBarBorderBackground"));
 		add(panel, BorderLayout.NORTH);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{0, 0, 0};
@@ -49,23 +51,20 @@ public abstract class AbstractFrame extends JPanel {
 		gbl_panel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
-		JLabel lblOl = new JLabel("Olá");
-		GridBagConstraints gbc_lblOl = new GridBagConstraints();
-		gbc_lblOl.insets = new Insets(0, 0, 0, 5);
-		gbc_lblOl.gridx = 0;
-		gbc_lblOl.gridy = 0;
-		panel.add(lblOl, gbc_lblOl);
+		JLabel lblCabecalho = new JLabel("Ratão do banhado Systems");
+		GridBagConstraints gbc_lblCabecalho = new GridBagConstraints();
+		gbc_lblCabecalho.insets = new Insets(0, 0, 0, 5);
+		gbc_lblCabecalho.gridx = 0;
+		gbc_lblCabecalho.gridy = 0;
+		panel.add(lblCabecalho, gbc_lblCabecalho);
 		
-		btnFechar = new JButton("Fechar");
+		btnFechar = new JButton("");
+		btnFechar.setIcon(new ImageIcon(AbstractFrame.class.getResource("/icons/delete-icon.png")));
 		GridBagConstraints gbc_btnFechar = new GridBagConstraints();
 		gbc_btnFechar.anchor = GridBagConstraints.EAST;
 		gbc_btnFechar.gridx = 1;
 		gbc_btnFechar.gridy = 0;
 		panel.add(btnFechar, gbc_btnFechar);
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(Color.WHITE);
-		add(panel_1, BorderLayout.SOUTH);
 
 		
 		configureFrame();

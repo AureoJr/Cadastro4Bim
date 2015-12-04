@@ -20,7 +20,7 @@ import java.awt.event.ActionEvent;
  * @since 03/12/2015 19:59
  *
  */
-public class CadastroCliente extends JPanel {
+public class CadastroProduto extends JPanel {
              
 	/**
 	 * 
@@ -34,7 +34,7 @@ public class CadastroCliente extends JPanel {
 	/**      
 	 * Create the panel.
 	 */
-	public CadastroCliente() {
+	public CadastroProduto() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 105, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -193,16 +193,16 @@ public class CadastroCliente extends JPanel {
 		gbc_btnSalvar.gridx = 1;
 		gbc_btnSalvar.gridy = 0;
 		panel.add(btnSalvar, gbc_btnSalvar);
-		btnSalvar.setIcon(new ImageIcon(CadastroCliente.class.getResource("/icons/Accept-icon.png")));
+		btnSalvar.setIcon(new ImageIcon(CadastroProduto.class.getResource("/icons/Accept-icon.png")));
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
-		btnSalvar.setSelectedIcon(new ImageIcon(CadastroCliente.class.getResource("/icons/Accept-icon.png")));
+		btnSalvar.setSelectedIcon(new ImageIcon(CadastroProduto.class.getResource("/icons/Accept-icon.png")));
 		
 		JButton btnCancel = new JButton("");
 		btnCancel.setToolTipText("Cancelar");
-		btnCancel.setIcon(new ImageIcon(CadastroCliente.class.getResource("/icons/cancel-icon.png")));
+		btnCancel.setIcon(new ImageIcon(CadastroProduto.class.getResource("/icons/cancel-icon.png")));
 		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
 		gbc_btnCancel.insets = new Insets(0, 0, 0, 5);
 		gbc_btnCancel.gridx = 2;
@@ -211,7 +211,7 @@ public class CadastroCliente extends JPanel {
 		
 		JButton btnBuscar = new JButton("");
 		btnBuscar.setToolTipText("Buscar");
-		btnBuscar.setIcon(new ImageIcon(CadastroCliente.class.getResource("/icons/search-icon.png")));
+		btnBuscar.setIcon(new ImageIcon(CadastroProduto.class.getResource("/icons/search-icon.png")));
 		GridBagConstraints gbc_btnBuscar = new GridBagConstraints();
 		gbc_btnBuscar.insets = new Insets(0, 0, 0, 5);
 		gbc_btnBuscar.gridx = 3;
@@ -220,7 +220,7 @@ public class CadastroCliente extends JPanel {
 		
 		JButton btnRemove = new JButton("");
 		btnRemove.setToolTipText("Remover");
-		btnRemove.setIcon(new ImageIcon(CadastroCliente.class.getResource("/icons/delete-1-icon.png")));
+		btnRemove.setIcon(new ImageIcon(CadastroProduto.class.getResource("/icons/delete-1-icon.png")));
 		GridBagConstraints gbc_btnRemove = new GridBagConstraints();
 		gbc_btnRemove.gridx = 4;
 		gbc_btnRemove.gridy = 0;
