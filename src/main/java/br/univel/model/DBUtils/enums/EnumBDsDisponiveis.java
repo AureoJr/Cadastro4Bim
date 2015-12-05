@@ -9,7 +9,8 @@ package br.univel.model.DBUtils.enums;
  */
 public enum EnumBDsDisponiveis {
 
-	POSTGRESQL("pgsql","PostgreSQL versão 9.1.18","org.postgresql.Driver","jdbc:postgresql://");
+	POSTGRESQL("pgsql","PostgreSQL versão 9.1.18","org.postgresql.Driver","jdbc:postgresql://"),
+    MYSQL("mysql","MySQL versão 5.5","com.mysql.jdbc.Driver","jdbc:mysql://");
 	
 	private final String key,value,driver,strConnection;
 

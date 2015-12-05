@@ -19,10 +19,12 @@ public class ItemVenda {
 	@Id
 	private Integer id;
  
-	@UmPraUm(coluna = "id_produto")
+	@Coluna(nome = "id_produto", tipo = "integer")
+	@UmPraUm(coluna = "id")
 	private Produto produto;
 	
-	@UmPraUm(coluna = "id_venda")
+	@Coluna(nome = "id_venda", tipo = "integer")
+	@UmPraUm(coluna = "id")
  	private Venda venda;
 	
 	@Coluna(nome = "id_item")

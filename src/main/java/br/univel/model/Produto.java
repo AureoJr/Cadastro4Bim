@@ -26,10 +26,10 @@ public class Produto {
 	@Coluna(nome="tipo_unidade")
 	private EnumTipoUnidade enumTipoUnidade;
 	
-	@Coluna(nome="custo")
+	@Coluna(nome="custo",tipo ="numeric(13,2)")
 	private BigDecimal custo;
 	
-	@Coluna(nome = "margem_lucro")
+	@Coluna(nome = "margem_lucro",tipo ="numeric(13,2)")
 	private BigDecimal margemLucro;
 
 	public Integer getId() {

@@ -2,19 +2,14 @@ package br.univel.model.DBUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.ReflectPermission;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
-
 import br.univel.model.DBUtils.annotations.Coluna;
 import br.univel.model.DBUtils.annotations.Id;
 import br.univel.model.DBUtils.annotations.Tabela;
+import br.univel.model.DBUtils.annotations.UmPraUm;
 import br.univel.model.DBUtils.enums.EnumBDsDisponiveis;
 
 /**
@@ -28,6 +23,7 @@ import br.univel.model.DBUtils.enums.EnumBDsDisponiveis;
 public class InitDataBase {
 
 	public static String pacote = "br.univel.model"; 
+	private EnumBDsDisponiveis bancoUltilizado;
 	
 	public static void main(String[] args) {
 		
@@ -48,7 +44,7 @@ public class InitDataBase {
 	 * Cria todas as tabelas referencciadas no model
 	 * @throws Exception 
 	 */
-	public String criarbanco() throws Exception{
+	public void criarbanco() throws Exception{
 		// Lista para armazenar as Classes
 		List<Class<?>> classes = new ArrayList<>();
 		
@@ -76,22 +72,20 @@ public class InitDataBase {
 
 			    String className = classe.getName().replaceAll(".class$", ""); 
 				classes.add(Class.forName(InitDataBase.pacote+"."+className));
-				System.out.println(Class.forName(InitDataBase.pacote+"."+className).getName());	
+
 			}
 		}
 		
 		// iniciando o script 
-		script.append("use ");
-		script.append( new Conexao().getDBName());
-		script.append("\n");
-		
+		if(bancoUltilizado == EnumBDsDisponiveis.MYSQL){
+    		script.append("use ");
+    		script.append( new Conexao().getDBName());
+    		script.append("\n");
+		}
 		//Criar scripts da tabela
 		for (Class<?> obj : classes) {
 			
 			Object tabela = Class.forName(obj.getName()).newInstance();
-			
-			
-			System.out.println(tabela.getClass().getName());
 			
 			Tabela novaTabela = tabela.getClass().getDeclaredAnnotation(Tabela.class);
 			
@@ -100,15 +94,13 @@ public class InitDataBase {
 			
 				script.append("CREATE TABLE ");
 				script.append(novaTabela.nome().isEmpty() ?  tabela.getClass() : novaTabela.nome());
-				script.append("{ \n");
+				script.append("( \n");
 				
 				script.append(addTableFields(tabela));
 			}
 		}
 				
 		System.out.println(script.toString());
-		return script.toString();
-		
 	}
 
 	/**
@@ -125,12 +117,19 @@ public class InitDataBase {
 		 
 		boolean possuiID = false;
 		
+		boolean possuiFK = false;
+		
 		//Verificação para garantir que a tabela tem uma coluna ID
 		for(Field campo : campos){
 			if(campo.isAnnotationPresent(Id.class)){
 				possuiID = true;
-				break;
+				
 			}
+            if(campo.isAnnotationPresent(UmPraUm.class)){
+                possuiFK = true;
+            
+            }			
+			
 		}
 		
 		if(!possuiID){
@@ -138,15 +137,16 @@ public class InitDataBase {
 		}		
 		
 		Id idTabela = campos.getClass().getAnnotation(Id.class);
-		
+		colunaTabela.append(" ");
 		colunaTabela.append(idTabela != null? idTabela.nome() : "ID ");
-		colunaTabela.append("integer, \n");
+		colunaTabela.append(" integer unique, \n");
 		
 		
 		
 		for(Field field : campos){
 			Coluna coluna = field.getDeclaredAnnotation(Coluna.class);
 			if(coluna != null){
+			    colunaTabela.append(" ");
 				colunaTabela.append(!coluna.nome().isEmpty() ? coluna.nome() : field.getName());
 				colunaTabela.append(" ");
 				colunaTabela.append(coluna.tipo());
@@ -160,10 +160,38 @@ public class InitDataBase {
 			}
 		}
 		
-		colunaTabela.append("primary key(ID)); \n");
+        if(possuiFK){
+            for(Field f : campos){
+                UmPraUm coluna = f.getDeclaredAnnotation(UmPraUm.class);
+                if(coluna != null){
+                    Coluna col = f.getDeclaredAnnotation(Coluna.class);
+                    colunaTabela.append(" FOREIGN KEY(");
+                    colunaTabela.append(col.nome());
+                    colunaTabela.append(") REFERENCES ");
+                    colunaTabela.append(f.getType().getDeclaredAnnotation(Tabela.class).nome());
+                    colunaTabela.append("(");
+                    colunaTabela.append(coluna.coluna());
+                    colunaTabela.append("), \n");
+                    
+                }
+            
+            }
+        }
 		
+		colunaTabela.append(" primary key(ID)\n); \n");
+				
 		return colunaTabela.toString();
 	}
+
+    
+    public EnumBDsDisponiveis getBancoUltilizado() {
+        return bancoUltilizado;
+    }
+
+    
+    public void setBancoUltilizado(EnumBDsDisponiveis bancoUltilizado) {
+        this.bancoUltilizado = bancoUltilizado;
+    }
 	
 }
 	

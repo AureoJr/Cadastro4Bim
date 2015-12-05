@@ -1,8 +1,6 @@
 package br.univel.model;
 
-import java.sql.Date;
 import java.util.List;
-
 import br.univel.model.DBUtils.annotations.Coluna;
 import br.univel.model.DBUtils.annotations.Id;
 import br.univel.model.DBUtils.annotations.Tabela;
@@ -23,12 +21,14 @@ public class Venda {
 	@Id
 	private Integer id;
 	
-	@Coluna(nome = "timestamp")
-	private Date timestamp;
+	@Coluna(nome = "hora_venda",tipo = "integer")
+	private Integer horaVenda;
 	
-	@UmPraUm(coluna = "id_cliente")
+	@Coluna(nome = "id_cliente",tipo = "integer")
+	@UmPraUm(coluna = "ID")
 	private Cliente cliente;
 	
+//	@Coluna(nome = "id_cliente",tipo = "integer")
 	@UmPraMuitos(coluna = "id_venda")
 	private List<ItemVenda> listaItemVenda;
 
@@ -40,15 +40,16 @@ public class Venda {
 		this.id = id;
 	}
 
-	public Date getTimestamp() {
-		return timestamp;
-	}
+    public Integer getHoraVenda() {
+        return horaVenda;
+    }
 
-	public void setTimestamp(Date timestamp) {
-		this.timestamp = timestamp;
-	}
+    
+    public void setHoraVenda(Integer horaVenda) {
+        this.horaVenda = horaVenda;
+    }
 
-	public Cliente getCliente() {
+    public Cliente getCliente() {
 		return cliente;
 	}
 
