@@ -35,7 +35,7 @@ public class Conexao {
 		// dados padroes para efetuar testes
 		DBUser = "java";
 		DBPass = "java2000";
-		DBName = "aula";
+		DBName = "java";
 		DBhost = "127.0.0.1";
 		DBPort = "5432";
 		DBSelecionado = EnumBDsDisponiveis.POSTGRESQL;

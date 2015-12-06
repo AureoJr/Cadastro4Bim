@@ -1,17 +1,22 @@
 package br.univel.view.inside;
-import javax.swing.JPanel;
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.JTextField;
-import javax.swing.JButton;
 import java.awt.Font;
-import javax.swing.SwingConstants;
-import javax.swing.JComboBox;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
 import javax.swing.ImageIcon;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
+import br.univel.model.Cliente;
+import br.univel.model.DBUtils.DB;
+import br.univel.view.actions.ActionSalvar;
+import br.univel.view.interfaces.IValidator;
 
 /**
  * Cadastro de Cliente
@@ -20,7 +25,7 @@ import java.awt.event.ActionEvent;
  * @since 03/12/2015 19:59
  *
  */
-public class CadastroCliente extends JPanel {
+public class CadastroCliente extends JPanel implements IValidator{
              
 	/**
 	 * 
@@ -31,10 +36,13 @@ public class CadastroCliente extends JPanel {
 	private JTextField txtEndereco;
 	private JTextField txtEmail;
 
+	private Cliente clienteContexto;
+	
 	/**      
 	 * Create the panel.
 	 */
 	public CadastroCliente() {
+		clienteContexto = new Cliente();
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 105, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -194,10 +202,11 @@ public class CadastroCliente extends JPanel {
 		gbc_btnSalvar.gridy = 0;
 		panel.add(btnSalvar, gbc_btnSalvar);
 		btnSalvar.setIcon(new ImageIcon(CadastroCliente.class.getResource("/icons/Accept-icon.png")));
-		btnSalvar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
+		try{
+			btnSalvar.addActionListener(new ActionSalvar(clienteContexto,this));
+		} catch (Exception e){
+			JOptionPane.showMessageDialog(this, e.getMessage());
+		}
 		btnSalvar.setSelectedIcon(new ImageIcon(CadastroCliente.class.getResource("/icons/Accept-icon.png")));
 		
 		JButton btnCancel = new JButton("");
@@ -207,6 +216,7 @@ public class CadastroCliente extends JPanel {
 		gbc_btnCancel.insets = new Insets(0, 0, 0, 5);
 		gbc_btnCancel.gridx = 2;
 		gbc_btnCancel.gridy = 0;
+//		btnCancel.addActionListener(new ActionSalvar(clienteContexto,this));
 		panel.add(btnCancel, gbc_btnCancel);
 		
 		JButton btnBuscar = new JButton("");
@@ -216,6 +226,7 @@ public class CadastroCliente extends JPanel {
 		gbc_btnBuscar.insets = new Insets(0, 0, 0, 5);
 		gbc_btnBuscar.gridx = 3;
 		gbc_btnBuscar.gridy = 0;
+//		btnBuscar.addActionListener(new ActionSalvar(clienteContexto,this));
 		panel.add(btnBuscar, gbc_btnBuscar);
 		
 		JButton btnRemove = new JButton("");
@@ -224,6 +235,7 @@ public class CadastroCliente extends JPanel {
 		GridBagConstraints gbc_btnRemove = new GridBagConstraints();
 		gbc_btnRemove.gridx = 4;
 		gbc_btnRemove.gridy = 0;
+//		btnRemove.addActionListener(new ActionSalvar(clienteContexto,this));
 		panel.add(btnRemove, gbc_btnRemove);
 
 	}
@@ -231,6 +243,36 @@ public class CadastroCliente extends JPanel {
 	@Override
 	public String toString() {
 		return "Cadastro de Cliente"; 
+	}
+
+	@Override
+	public boolean validarCampos() {
+		if(txtEmail.getText().isEmpty())
+			return false;
+
+		if(txtEndereco.getText().isEmpty())
+			return false;		
+
+		if(textField.getText().isEmpty())
+			return false;		
+
+		if(textField_1.getText().isEmpty())
+			return false;				
+		
+		
+		return true;
+	}
+
+	@Override
+	public void preencherCampos() {
+		DB db = new DB(new Cliente());
+		clienteContexto = db.getById(clienteContexto .getId());
+	}
+
+	@Override
+	public void limparCampos() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

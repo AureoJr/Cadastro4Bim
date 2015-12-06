@@ -88,4 +88,9 @@ public class Produto {
 	public void setMargemLucro(BigDecimal margemLucro) {
 		this.margemLucro = margemLucro;
 	}
+	
+	@Override
+	public String toString() {
+		return "Cliente";
+	}
 }

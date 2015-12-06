@@ -65,5 +65,9 @@ public class Venda {
 		this.listaItemVenda = listaItemVenda;
 	}
 
+	@Override
+	public String toString() {
+		return "Venda";
+	}
 	
 }

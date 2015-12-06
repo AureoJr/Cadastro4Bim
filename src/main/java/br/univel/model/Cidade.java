@@ -5,17 +5,17 @@ import br.univel.model.DBUtils.annotations.Id;
 import br.univel.model.DBUtils.annotations.Tabela;
 
 @Tabela(nome = "cidade")
-public class Cidade {	
+public class Cidade {
 
 	@Id(nome = "id")
 	private Integer id;
-	
-	@Coluna(nome = "uf" )
+
+	@Coluna(nome = "uf")
 	private String uf;
-	
+
 	@Coluna(nome = "nome")
 	private String nomeCidade;
-	
+
 	@Coluna(nome = "uf_abreviado")
 	private String ufAbreviado;
 
@@ -51,4 +51,8 @@ public class Cidade {
 		this.ufAbreviado = ufAbreviado;
 	}
 
+	@Override
+	public String toString() {
+		return "Cidade";
+	}
 }

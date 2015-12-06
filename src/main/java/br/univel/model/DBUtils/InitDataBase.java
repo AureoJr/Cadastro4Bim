@@ -44,7 +44,7 @@ public class InitDataBase {
 	 * Cria todas as tabelas referencciadas no model
 	 * @throws Exception 
 	 */
-	public void criarbanco() throws Exception{
+	public String criarbanco() throws Exception{
 		// Lista para armazenar as Classes
 		List<Class<?>> classes = new ArrayList<>();
 		
@@ -101,6 +101,8 @@ public class InitDataBase {
 		}
 				
 		System.out.println(script.toString());
+		
+		return script.toString(); 
 	}
 
 	/**
@@ -139,7 +141,8 @@ public class InitDataBase {
 		Id idTabela = campos.getClass().getAnnotation(Id.class);
 		colunaTabela.append(" ");
 		colunaTabela.append(idTabela != null? idTabela.nome() : "ID ");
-		colunaTabela.append(" integer unique, \n");
+		if(bancoUltilizado == EnumBDsDisponiveis.POSTGRESQL)
+			colunaTabela.append(" serial unique, \n");
 		
 		
 		

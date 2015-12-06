@@ -74,5 +74,10 @@ public class Cliente extends Entidade{
 		this.enumGenero = enumGenero;
 	}
 	
+	@Override
+	public String toString() {
+	
+		return "Cliente";
+	}
 	
 }
