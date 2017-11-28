@@ -1,7 +1,9 @@
 package br.univel.domain.model.customer;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -18,17 +20,23 @@ import javax.persistence.Table;
 public class Country {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,
+					generator = "country_sequence")
 	private Integer id;
 	
+	@Column(name = "alpha_code_2")
 	private String alphaCode2;
-	
+
+	@Column(name = "alpha_code_3")	
 	private String alphaCode3;
 	
+	@Column(name = "short_name")
 	private String shortName;
 	
-	private String numericCode;
+	@Column(name = "numeric_code")
+	private Integer numericCode;
 	
+	@Column
 	private boolean independent;
 
 	public Integer getId() {

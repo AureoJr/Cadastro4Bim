@@ -1,9 +1,14 @@
 package br.univel.domain.model.customer;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -11,16 +16,21 @@ import javax.persistence.Table;
 public class Customer {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,
+			generator = "customer_sequence")
 	private Integer id;
 	
 	@Column(name = "display_name")
 	private String displayName;
 	
+	@Column
 	private String name;
 	
-	private Address address;
+	@OneToMany
+	@JoinColumn(name = "customer_id")
+	private List<Address> address;
 	
+	@Column(name = "image_profile")
 	private String imageProfile;
 
 	public Integer getId() {
@@ -47,14 +57,6 @@ public class Customer {
 		this.name = name;
 	}
 
-	public Address getAddress() {
-		return address;
-	}
-
-	public void setAddress(Address address) {
-		this.address = address;
-	}
-
 	public String getImageProfile() {
 		return imageProfile;
 	}
@@ -63,6 +65,12 @@ public class Customer {
 		this.imageProfile = imageProfile;
 	}
 
+	public List<Address> getAddress() {
+		return address;
+	}
 
+	public void setAddress(List<Address> address) {
+		this.address = address;
+	}
 	
 }

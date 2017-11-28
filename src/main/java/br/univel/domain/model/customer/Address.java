@@ -1,7 +1,9 @@
 package br.univel.domain.model.customer;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -12,24 +14,35 @@ import javax.persistence.Table;
 public class Address {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,
+			generator = "address_squence")
 	private Integer id;
 
+	@Column
 	private String name;
 	
+	@Column(name = "address_type")
 	private String addressType;
 	
+	@Column
 	private String line1;
 	
+	@Column
 	private String number;
 	
+	@Column(name = "zip_code")
 	private String zipCode;
 	
+	@Column(name = "postal_code")
 	private String postalCode;
 	
 	@OneToOne
-	@JoinColumn
+	@JoinColumn(name = "city_id")
 	private City city;
+	
+	@OneToOne
+	@JoinColumn(name = "customer_id")
+	private Customer customer;
 
 	public Integer getId() {
 		return id;
