@@ -71,11 +71,11 @@ public class Country {
 		this.shortName = shortName;
 	}
 
-	public String getNumericCode() {
+	public Integer getNumericCode() {
 		return numericCode;
 	}
 
-	public void setNumericCode(String numericCode) {
+	public void setNumericCode(Integer numericCode) {
 		this.numericCode = numericCode;
 	}
 
