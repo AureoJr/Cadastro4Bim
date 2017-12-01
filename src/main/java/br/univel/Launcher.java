@@ -1,5 +1,7 @@
 package br.univel;
 
+import br.univel.ui.main.MainWindow;
+
 /**
  * 
  * Start application 
@@ -16,5 +18,6 @@ public class Launcher {
 		// Initializing UI of system
 //		MainWindow.start();
 		Class.forName("org.h2.Driver");
+		MainWindow.start();
 	}
 }
